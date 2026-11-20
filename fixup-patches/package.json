@@ -1,0 +1,14 @@
+{
+  "name": "dsh-fixup-patches",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./reuse-loaded-skills": "./patches/reuse-loaded-skills/index.js",
+    "./reuse-loaded-skills/locale/*.json": "./patches/reuse-loaded-skills/locale/*.json"
+  },
+  "files": ["cordis.patch.yml", "locale", "patches"],
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
+}

@@ -1,0 +1,3 @@
+- insert:
+    - id: fixup-reuse-loaded-skills
+      name: dsh-fixup-patches/reuse-loaded-skills

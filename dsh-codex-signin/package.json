@@ -1,0 +1,45 @@
+{
+  "name": "dsh-codex-signin",
+  "version": "0.3.0",
+  "description": "Codex account sign-in, model catalog and reasoning settings for DeepSeek Harness",
+  "type": "module",
+  "main": "./host.js",
+  "exports": {
+    ".": "./host.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "host.js",
+    "login.js",
+    "editor.js",
+    "models.js",
+    "client.js",
+    "cordis.patch.yml",
+    "README.md",
+    "defaults.js"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22.19"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    },
+    "compatibility": {
+      "dsh": ">=0.2.2-rc.3 <0.2.3-0"
+    }
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "3.19.0"
+  },
+  "bundleDependencies": [
+    "@deepseek-ai/schemastery"
+  ]
+}
