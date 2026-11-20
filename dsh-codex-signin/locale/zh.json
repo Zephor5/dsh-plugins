@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Codex 登录",
+    "description": "用 ChatGPT 账号登录，在模型设置中选择可用的 Codex 模型，并为每个模型设置默认思考等级。"
+  }
+}

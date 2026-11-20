@@ -13,6 +13,8 @@
 
 ## 实现与开发
 
+从旧包 `dsh-codex-signin` 迁移时，如果模型的默认思考等级没有恢复，检查当前 profile 的 `cordis.patch.yml`。找到 `id: dsh-codex-signin` 对应的配置项。若下面仍有 `name: dsh-codex-signin`，将这一行改为 `name: "@zephor/dsh-codex-signin"`，保留原有的 `id` 和 `config.modelDefaults`。重新加载 profile 后，DSH 会将已有设置应用到新包。
+
 登录窗口复用 Host 的授权服务，凭据位于 Harness 的 `llm-pi-ai/openai-codex` 记录。账号列表来自 ChatGPT 的 `/backend-api/codex/models`。本机启用自定义 API 地址、协议或密钥的路由继续使用原有发现逻辑。
 
 rc.5 的模型发现按设置命名空间注册，每个命名空间只有一个处理器。插件在本 Host 实例上装饰 `llm.discoverModels`，限定为原生 Codex 路由。原生候选格式携带容量和输入类型；保存时，插件把账号的思考档位补到缺少该字段的模型行。多选、模型顺序、容量编辑、版本冲突检查和聊天菜单均由 Harness 处理。默认档位保存在当前 profile 的插件配置 `dsh-codex-signin.config.modelDefaults`，按模型 ID 查找。rc.5 没有模型行扩展位，客户端只在 Codex 提供方已展开的行内挂载下拉框。Host 在该实例的模型元数据归一化步骤提供 `defaultEffort`，原生聊天菜单、请求准备和发送共用这一元数据。卸载会释放这些兼容处理；宿主升级后应重新验证原生多选和会话模型切换。

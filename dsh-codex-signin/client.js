@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-  id: 'dsh-codex-signin',
+  id: '@zephor/dsh-codex-signin',
   factory(require) {
     const R = require('react')
     const { Button, Input, Modal, StateDot } = require('@deepseek-ai/dsh-client-ui-primitives')

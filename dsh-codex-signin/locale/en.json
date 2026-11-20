@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Codex sign-in",
+    "description": "Sign in with ChatGPT to choose available Codex models and set each model’s default reasoning effort."
+  }
+}
