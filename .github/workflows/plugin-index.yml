@@ -62,8 +62,8 @@ jobs:
           npm install --offline --ignore-scripts --no-audit --no-fund "$GITHUB_WORKSPACE"/market/site/registry/-/*.tgz
           for dir in $(jq -r '.[]' <<< "$RELEASE_PLUGINS"); do
             case "$dir" in
-              dsh-codex-signin) node --input-type=module -e "import 'dsh-codex-signin'" ;;
-              fixup-patches) node --input-type=module -e "import 'dsh-fixup-patches/reuse-loaded-skills'" ;;
+              dsh-codex-signin) node --input-type=module -e "import '@zephor/dsh-codex-signin'" ;;
+              fixup-patches) node --input-type=module -e "import '@zephor/dsh-fixup-patches/reuse-loaded-skills'" ;;
             esac
           done
       - name: Publish new plugin versions to GitHub Releases

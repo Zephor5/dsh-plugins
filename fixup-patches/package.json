@@ -1,6 +1,6 @@
 {
-  "name": "dsh-fixup-patches",
-  "version": "0.1.0",
+  "name": "@zephor/dsh-fixup-patches",
+  "version": "0.1.1",
   "description": "Per-profile patches for DeepSeek Harness",
   "license": "MIT",
   "repository": {

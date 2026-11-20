@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseMarketIndex } from '@deepseek-ai/dsh-plugin-market-index'
 import semver from 'semver'
@@ -32,6 +32,10 @@ const plugins = [
   },
 ]
 
+function archivePrefix(name, version) {
+  return `${name.replace(/^@/, '').replace('/', '-')}-${version}-`
+}
+
 function pack(directory) {
   const cwd = join(root, directory)
   const manifest = JSON.parse(readFileSync(join(cwd, 'package.json'), 'utf8'))
@@ -41,7 +45,7 @@ function pack(directory) {
   for (const name of manifest.bundleDependencies ?? []) {
     if (!archive.bundled.includes(name)) throw new Error(`Missing bundled dependency ${name} in ${archive.filename}`)
   }
-  const filename = `${manifest.name}-${manifest.version}-${archive.shasum}.tgz`
+  const filename = archivePrefix(manifest.name, manifest.version) + archive.shasum + '.tgz'
   renameSync(join(archives, archive.filename), join(archives, filename))
   return { manifest, timestamp, filename, integrity: archive.integrity, shasum: archive.shasum }
 }
@@ -55,7 +59,7 @@ function releasedPackage(directory, releases) {
   if (!release) return null
 
   const version = release.tag_name.slice(prefix.length)
-  const asset = release.assets.find(a => a.name.startsWith(`${name}-${version}-`) && a.name.endsWith('.tgz'))
+  const asset = release.assets.find(a => a.name.startsWith(archivePrefix(name, version)) && a.name.endsWith('.tgz'))
   if (!asset) throw new Error(`Missing package archive in ${release.tag_name}`)
   const archive = join(archives, asset.name)
   execFileSync('gh', ['release', 'download', release.tag_name, '--pattern', asset.name, '--output', archive, '--clobber'])
@@ -78,7 +82,9 @@ function pluginEntry({ directory, title, description }, { manifest, timestamp, f
     versions: { [manifest.version]: { ...manifest, dist } },
     time: { [manifest.version]: new Date(timestamp * 1000).toISOString() },
   }
-  writeFileSync(join(site, 'registry', manifest.name), JSON.stringify(metadata) + '\n')
+  const metadataPath = join(site, 'registry', manifest.name)
+  mkdirSync(dirname(metadataPath), { recursive: true })
+  writeFileSync(metadataPath, JSON.stringify(metadata) + '\n')
   const compatibility = manifest.engines?.dsh ?? manifest.dsh.compatibility?.dsh
   return {
     name: manifest.name,

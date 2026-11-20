@@ -1,4 +1,4 @@
-# Codex 登录 · dsh-codex-signin
+# Codex 登录 · @zephor/dsh-codex-signin
 
 在 DeepSeek Harness 自带的模型目录里配置 ChatGPT 账号可用的 Codex 模型，在聊天输入框切换模型和思考强度。本版本在 macOS 桌面版 0.2.2-rc.5 的随附运行时上验证。
 
