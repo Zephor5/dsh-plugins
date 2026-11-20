@@ -9,7 +9,7 @@ import semver from 'semver'
 const root = fileURLToPath(new URL('../', import.meta.url))
 const repository = 'https://github.com/Zephor5/dsh-plugins'
 const baseUrl = new URL(process.env.MARKET_BASE_URL || 'https://zephor5.github.io/dsh-plugins/')
-const registry = new URL('registry/', baseUrl).href
+const archiveBaseUrl = new URL('registry/-/', baseUrl)
 const site = fileURLToPath(new URL('./site/', import.meta.url))
 const archives = join(site, 'registry', '-')
 mkdirSync(archives, { recursive: true })
@@ -75,7 +75,7 @@ function releasedPackage(directory, releases) {
 }
 
 function pluginEntry({ directory, title, description }, { manifest, timestamp, filename, integrity, shasum }) {
-  const dist = { tarball: new URL('-/' + filename, registry).href, integrity, shasum }
+  const dist = { tarball: new URL(filename, archiveBaseUrl).href, integrity, shasum }
   const metadata = {
     name: manifest.name,
     'dist-tags': { latest: manifest.version },
@@ -95,7 +95,7 @@ function pluginEntry({ directory, title, description }, { manifest, timestamp, f
     versions: [{
       version: manifest.version,
       publishTimestamp: timestamp,
-      source: { type: 'npm', registry },
+      source: { type: 'npm', registry: 'https://registry.npmjs.org/' },
       ...(compatibility && { engines: { dsh: compatibility } }),
     }],
   }

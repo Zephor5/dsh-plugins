@@ -1,6 +1,7 @@
 name: Release DSH plugins and publish index
 
 on:
+  workflow_dispatch: # Rebuild Pages from existing releases.
   push:
     branches: [main]
     paths:
@@ -16,6 +17,7 @@ concurrency:
 
 jobs:
   changes:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     outputs:
       plugins: ${{ steps.detect.outputs.plugins }}
@@ -101,6 +103,9 @@ jobs:
 
   pages:
     needs: npm
+    if: >-
+      ${{ !cancelled() && github.ref == 'refs/heads/main' &&
+          (github.event_name == 'workflow_dispatch' || needs.npm.result == 'success') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -120,6 +125,7 @@ jobs:
 
   deploy:
     needs: pages
+    if: ${{ !cancelled() && needs.pages.result == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       pages: write

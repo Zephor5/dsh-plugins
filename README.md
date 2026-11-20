@@ -18,7 +18,7 @@
 https://zephor5.github.io/dsh-plugins/index.json
 ```
 
-首次部署时，在仓库的 **Settings → Pages → Source** 选择 **GitHub Actions**。每次正式发布时，工作流会用 DSH 官方校验器检查索引，并将索引和安装包一起部署到 Pages。
+首次部署时，在仓库的 **Settings → Pages → Source** 选择 **GitHub Actions**。DSH 从 Pages 读取索引，从公共 npm 安装插件并解析当前 profile 的依赖。每次正式发布后，工作流会校验并更新索引。仅修订索引时，可运行 `gh workflow run plugin-index.yml --ref main`，从已有 Release 重建 Pages。
 
 ### 插件发布
 
