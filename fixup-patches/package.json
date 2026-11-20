@@ -1,6 +1,6 @@
 {
   "name": "@zephor/dsh-fixup-patches",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Per-profile patches for DeepSeek Harness",
   "license": "MIT",
   "repository": {
@@ -15,6 +15,14 @@
     "./reuse-loaded-skills": "./patches/reuse-loaded-skills/index.js",
     "./reuse-loaded-skills/locale/*.json": "./patches/reuse-loaded-skills/locale/*.json"
   },
-  "files": ["cordis.patch.yml", "locale", "patches"],
-  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
+  "files": [
+    "cordis.patch.yml",
+    "locale",
+    "patches"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
 }

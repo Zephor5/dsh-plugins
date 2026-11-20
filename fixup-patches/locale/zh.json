@@ -1,1 +1,6 @@
-{ "meta": { "title": "Fixup Patches", "description": "可独立启停的 DeepSeek Harness 小补丁。" } }
+{
+  "meta": {
+    "title": "Fixup 补丁集",
+    "description": "按 DSH profile 单独启停补丁，例如提示模型复用已加载的技能。"
+  }
+}

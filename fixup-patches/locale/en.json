@@ -1,1 +1,6 @@
-{ "meta": { "title": "Fixup Patches", "description": "Small, independent fixes for DeepSeek Harness." } }
+{
+  "meta": {
+    "title": "Fixup Patches",
+    "description": "Toggle patches per DSH profile, including a prompt to reuse loaded skills."
+  }
+}
