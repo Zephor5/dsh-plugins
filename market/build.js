@@ -95,7 +95,7 @@ function pluginEntry({ directory, title, description }, { manifest, timestamp, f
     versions: [{
       version: manifest.version,
       publishTimestamp: timestamp,
-      source: { type: 'npm', registry: 'https://registry.npmjs.org/' },
+      source: { type: 'npm' },
       ...(compatibility && { engines: { dsh: compatibility } }),
     }],
   }

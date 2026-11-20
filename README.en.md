@@ -18,7 +18,7 @@ Under **Plugins → Experimental plugins**, enable **Custom Plugin Index**. Open
 https://zephor5.github.io/dsh-plugins/index.json
 ```
 
-For the first deployment, select **GitHub Actions** under **Settings → Pages → Source** in the repository. DSH reads the index from Pages and uses the public npm registry for plugins and existing profile dependencies. Each release validates and updates the index. To deploy an index-only change, run `gh workflow run plugin-index.yml --ref main` to rebuild Pages from existing releases.
+For the first deployment, select **GitHub Actions** under **Settings → Pages → Source** in the repository. DSH reads the index from Pages and uses the current profile’s selected npm registry, including a configured mirror, for plugins and dependencies. Each release validates and updates the index. To deploy an index-only change, run `gh workflow run plugin-index.yml --ref main` to rebuild Pages from existing releases.
 
 ### Plugin releases
 
