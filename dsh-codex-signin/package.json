@@ -1,6 +1,12 @@
 {
   "name": "dsh-codex-signin",
   "version": "0.3.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zephor5/dsh-plugins.git",
+    "directory": "dsh-codex-signin"
+  },
   "description": "Codex account sign-in, model catalog and reasoning settings for DeepSeek Harness",
   "type": "module",
   "main": "./host.js",

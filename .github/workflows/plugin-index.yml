@@ -1,0 +1,133 @@
+name: Release DSH plugins and publish index
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dsh-codex-signin/package.json'
+      - 'fixup-patches/package.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plugin-index-pages
+  queue: max
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      plugins: ${{ steps.detect.outputs.plugins }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - run: npm ci --prefix market --ignore-scripts
+      - name: Compare plugin versions across the push
+        id: detect
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          plugins=$(node market/changed-plugins.js "$BEFORE")
+          echo "plugins=$plugins" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: changes
+    if: needs.changes.outputs.plugins != '[]'
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_PLUGINS: ${{ needs.changes.outputs.plugins }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - run: npm ci --prefix market --ignore-scripts
+      - if: contains(fromJSON(env.RELEASE_PLUGINS), 'dsh-codex-signin')
+        run: npm ci --prefix dsh-codex-signin --ignore-scripts && npm test --prefix dsh-codex-signin
+      - run: npm run build --prefix market
+      - name: Load selected plugins from the release archives
+        run: |
+          cd "$(mktemp -d)"
+          npm install --offline --ignore-scripts --no-audit --no-fund "$GITHUB_WORKSPACE"/market/site/registry/-/*.tgz
+          for dir in $(jq -r '.[]' <<< "$RELEASE_PLUGINS"); do
+            case "$dir" in
+              dsh-codex-signin) node --input-type=module -e "import 'dsh-codex-signin'" ;;
+              fixup-patches) node --input-type=module -e "import 'dsh-fixup-patches/reuse-loaded-skills'" ;;
+            esac
+          done
+      - name: Publish new plugin versions to GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash market/release.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-packages
+          path: market/site
+          if-no-files-found: error
+
+  npm:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - uses: actions/download-artifact@v8
+        with:
+          name: release-packages
+          path: market/site
+      - name: Publish plugin archives to npm
+        env:
+          NPM_BOOTSTRAP_TOKEN: ${{ secrets.NPM_BOOTSTRAP_TOKEN }}
+        run: node market/publish-npm.js
+
+  pages:
+    needs: npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - run: npm ci --prefix market --ignore-scripts
+      - name: Build the complete index from published GitHub Releases
+        run: node market/build.js --released
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: market/site
+
+  deploy:
+    needs: pages
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}index.json
+    steps:
+      - name: Deploy index
+        id: deployment
+        uses: actions/deploy-pages@v5

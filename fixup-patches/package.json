@@ -1,7 +1,13 @@
 {
   "name": "dsh-fixup-patches",
   "version": "0.1.0",
-  "private": true,
+  "description": "Per-profile patches for DeepSeek Harness",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zephor5/dsh-plugins.git",
+    "directory": "fixup-patches"
+  },
   "type": "module",
   "exports": {
     "./package.json": "./package.json",
