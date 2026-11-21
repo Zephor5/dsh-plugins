@@ -9,10 +9,11 @@
 | [dsh-acp-one](https://github.com/Zephor5/dsh-acp-one/blob/4e22e553b4c8d71103b92bc5f270c74ddea61f0c/README.md) | 以 `dsh-acp-resume` 包发布，让 DSH 与同一个外部子代理持续多轮对话，并在进程重启后恢复会话。 |
 | [@zephor/dsh-codex-signin](dsh-codex-signin/README.md) | 使用 ChatGPT 账号登录，在 DSH 中配置可用的 Codex 模型，并在聊天时切换模型和思考强度。 |
 | [@zephor/dsh-fixup-patches](fixup-patches/README.md) | 可为每个 DSH profile 单独启停补丁，例如提示模型复用上下文中已加载的技能。 |
+| [@zephor/dsh-agent-context](https://github.com/Zephor5/agent-context/tree/main/integrations/dsh) | 在 DSH 中管理个人知识库和黑板。安装包自带 CLI，复用已有知识库或在首次启用时创建。 |
 
 ## 在 DSH 中添加插件索引
 
-在「插件 → 实验性插件」启用「自定义插件索引」，然后在「发现 → 添加索引源」填入以下地址。部署后可从这个源安装 **Codex 登录** 和 **Fixup 补丁集**。
+在「插件 → 实验性插件」启用「自定义插件索引」，然后在「发现 → 添加索引源」填入以下地址。部署后可从这个源安装 **Codex 登录**、**Fixup 补丁集**和 **Agent Context**。
 
 ```text
 https://zephor5.github.io/dsh-plugins/index.json

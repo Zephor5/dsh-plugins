@@ -110,6 +110,31 @@ for (const plugin of plugins) {
   const archive = released ? releasedPackage(plugin.directory, releases) : pack(plugin.directory)
   if (archive) entries.push(pluginEntry(plugin, archive))
 }
+// Agent Context is released by its own repository. Full indexes discover the
+// installable npm version; package publication jobs only process local archives.
+if (released || !process.env.RELEASE_PLUGINS) {
+  const name = '@zephor/dsh-agent-context'
+  const response = await fetch(`https://registry.npmjs.org/${encodeURIComponent(name)}`)
+  if (!response.ok) throw new Error(`Cannot read ${name} metadata: HTTP ${response.status}`)
+  const metadata = await response.json()
+  const version = metadata['dist-tags'].latest
+  const manifest = metadata.versions[version]
+  if (manifest?.name !== name || !manifest.dsh?.bundle) throw new Error(`Invalid DSH bundle: ${name}@${version}`)
+  entries.push({
+    name,
+    title: { zh: 'Agent Context · 个人知识库', en: 'Agent Context · Personal wiki' },
+    description: {
+      zh: '在 DSH 中检索知识、追加记录并共享本机黑板。首次使用会初始化知识库，已有配置会优先复用。',
+      en: 'Search your knowledge, capture notes, and share a local blackboard in DSH. Existing settings take priority; first-time users get a new vault.',
+    },
+    homepage: 'https://github.com/Zephor5/agent-context/tree/main/integrations/dsh#readme',
+    repository: { url: 'https://github.com/Zephor5/agent-context', directory: 'integrations/dsh' },
+    versions: [{
+      version, publishTimestamp: Math.floor(Date.parse(metadata.time[version]) / 1000),
+      source: { type: 'npm' }, engines: { dsh: manifest.engines.dsh },
+    }],
+  })
+}
 const index = {
   format: 1,
   title: { zh: 'Zephor5 的 DSH 插件', en: 'DSH plugins by Zephor5' },

@@ -9,10 +9,11 @@ A collection of plugins for DeepSeek Harness (DSH). Each plugin can be installed
 | [dsh-acp-one](https://github.com/Zephor5/dsh-acp-one/blob/4e22e553b4c8d71103b92bc5f270c74ddea61f0c/README.en.md) | Published as `dsh-acp-resume`. It lets DSH work with the same external subagent across turns and resume the session after a process restart. |
 | [@zephor/dsh-codex-signin](dsh-codex-signin/README.md) | Sign in with your ChatGPT account, configure available Codex models in DSH, and switch models or reasoning effort during a chat. Guide in Chinese. |
 | [@zephor/dsh-fixup-patches](fixup-patches/README.md) | Toggle individual patches per DSH profile, including a patch that prompts agents to reuse skills already loaded in context. Guide in Chinese. |
+| [@zephor/dsh-agent-context](https://github.com/Zephor5/agent-context/tree/main/integrations/dsh) | Manage your personal wiki and blackboard in DSH. The plugin includes its CLI and reuses an existing vault or initializes one on first use. |
 
 ## Add the index to DSH
 
-Under **Plugins → Experimental plugins**, enable **Custom Plugin Index**. Open **Discover → Add index source** and paste the URL below. Once deployed, the index offers **Codex Sign-in** and **Fixup Patches**.
+Under **Plugins → Experimental plugins**, enable **Custom Plugin Index**. Open **Discover → Add index source** and paste the URL below. Once deployed, the index offers **Codex Sign-in**, **Fixup Patches**, and **Agent Context**.
 
 ```text
 https://zephor5.github.io/dsh-plugins/index.json
