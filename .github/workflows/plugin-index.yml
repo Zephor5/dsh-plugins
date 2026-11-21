@@ -1,7 +1,7 @@
 name: Release DSH plugins and publish index
 
 on:
-  workflow_dispatch: # Rebuild Pages from existing releases.
+  workflow_dispatch: # Manual refresh or dispatch from agent-context after a verified npm release.
   push:
     branches: [main]
     paths:

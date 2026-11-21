@@ -21,6 +21,8 @@ https://zephor5.github.io/dsh-plugins/index.json
 
 For the first deployment, select **GitHub Actions** under **Settings → Pages → Source** in the repository. DSH reads the index from Pages and uses the current profile’s selected npm registry, including a configured mirror, for plugins and dependencies. Each release validates and updates the index. To deploy an index-only change, run `gh workflow run plugin-index.yml --ref main` to rebuild Pages from existing releases.
 
+Agent Context publishes from its own repository. Once a stable release is downloadable from the public npm registry, its workflow triggers an index refresh in this repository. The manual refresh above is available independently.
+
 ### Plugin releases
 
 Bump a plugin’s `package.json` version and push or merge the change to `main`. Update its lockfile if present. The workflow compares SemVer values before and after the entire push and packages, tests, and releases only the plugins whose versions increased. For example, bumping only `dsh-codex-signin` from `0.3.0` to `0.3.1` releases only `@zephor/dsh-codex-signin@0.3.1`. An edit to a description or dependency alone ends after the version check.

@@ -21,6 +21,8 @@ https://zephor5.github.io/dsh-plugins/index.json
 
 首次部署时，在仓库的 **Settings → Pages → Source** 选择 **GitHub Actions**。DSH 从 Pages 读取索引，按当前 profile 选择的 npm 安装源获取插件和依赖，支持用户配置的镜像。每次正式发布后，工作流会校验并更新索引。仅修订索引时，可运行 `gh workflow run plugin-index.yml --ref main`，从已有 Release 重建 Pages。
 
+Agent Context 在其源码仓库独立发布。正式版本在公共 npm 可下载后，发布工作流会主动触发本仓库的索引刷新。也可随时手动运行上述工作流。
+
 ### 插件发布
 
 将插件的 `package.json` 版本号提高并推送或合并到 `main` 即可发版。有锁文件的插件需同步更新锁文件。工作流比较整次推送前后的 SemVer，只打包、测试并发布版本提高的插件。例如，只有 `dsh-codex-signin` 从 `0.3.0` 升到 `0.3.1` 时，只发布 `@zephor/dsh-codex-signin@0.3.1`。仅修改包描述或依赖时，版本检查后即结束。
